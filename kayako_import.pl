@@ -19,7 +19,7 @@ my $database = "kayako";
 my $host     = "localhost";
 my $username = "username";
 my $password = "password";
-my $hdurl = "http://yourhelpdeskurl";
+my $hdurl = "http://helpdesk.domain.com";
 
 # FUNCTION TO TRIM WHITESPACE
 sub trim($)
