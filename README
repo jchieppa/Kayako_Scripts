@@ -1,3 +1,7 @@
+##########################
+# kayako_upgrade.pl script
+##########################
+
 INTRODUCTION
 ============
 Perl script to save the laborious task of upgrading Kayako download helpdesk by hand.  If 
@@ -17,7 +21,7 @@ enter only the directory name, i.e. fusion-stable-sourceobf-4-64-1-4827 not the 
 
 When prompted a (Y/n) the script assumes Yes on Y/y or enter and no on any other character.
 
-We use Gary's 'CustomTweaks' App.  If you do not please comment out or remove lines 93-95.
+We use Gary's 'CustomTweaks' App.  If you do not please comment out or remove lines 99-101.
 
 CONFIGURATION
 =============
@@ -32,3 +36,49 @@ my $dbname = 'kayako';
 # SET YOUR HTDOCS ROOT 
 my $path = "/www/htdocs";
 
+# SET YOUR HELPDESK URL
+my $hdurl = "http://helpdesk.domain.com";
+
+Make sure you leave off the trailing / of the url as it's manually input throughout the script
+to prevent visual munging of variable & path.
+
+# SET APACHE USER & GROUP
+my $apache = "nobody.www";
+
+We run Apache under nobody user, thus we give file and directory ownership to nobody.www 
+Chanage this variable as needed
+
+
+  
+##########################
+# kayako_import.pl script
+##########################
+
+INTRODUCTION
+============
+Perl script handle importing the kayako database dump from mysqldump into a different kayako
+instance (our dev environment).  It also does necessary housekeeping and disables client facing
+features like email queue and autoclose rules. 
+
+INSTALLATION
+============
+Copy the kayako_import.pl script to your htdocs root directory.
+
+Script expects that you have already the database export file in the form of filename.sql in
+your htdocs root directory.
+
+CONFIGURATION
+=============
+Edit the script to define variables relevant to your installation for the following variables
+below:
+
+Note: Leave off the trailing / in the helpdesk url as it's manually input throughout the script
+to prevent visual munging of the variable & path.
+
+# CONFIG VARIABLES
+my $platform = "mysql";
+my $database = "kayako";
+my $host     = "localhost";
+my $username = "username";
+my $password = "password";
+my $hdurl = "http://yourhelpdeskurl";

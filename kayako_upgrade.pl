@@ -2,8 +2,8 @@
 ####################################################################################
 # Automate copying required config files, key.php and attachments directory when
 # doing a Kayako version upgrade.
-# 12/22/2013
-# Version 1.3.2
+# 12/23/2013
+# Version 1.3.4
 # jchieppa@gmail.com
 ####################################################################################
 
@@ -15,10 +15,16 @@ use POSIX 'strftime';
 # SET YOUR DATABASE VARIABLES
 my $dbuser = 'username';
 my $dbpass = 'password';
-my $dbname = 'dbname';
+my $dbname = 'kayako';
 
 # SET YOUR HTDOCS ROOT 
 my $path = "/www/htdocs";
+
+# SET YOUR HELPDESK URL
+my $hdurl = "http://helpdesk.domain.com";
+
+# SET APACHE USER & GROUP
+my $apache = "nobody.www";
 
 # MUST BE RUN AS ROOT
 my $login = (getpwuid $>);
@@ -33,7 +39,7 @@ sub trim($)
     return $string;
 }
 
-# SETUP DATE VARIABLE USED LATER IN DB FILENAMING.
+# SETUP DATE/TIMESTAMP VARIABLE USED LATER IN DB FILENAMING.
 my $date = strftime '%Y-%m-%d-%H', localtime;
 my $dbbackup = "mysqldump -u $dbuser -p$dbpass $dbname | gzip -c | cat > $path/backup/Kayako-$date.sql.gz";
 
@@ -132,22 +138,35 @@ print 'Install the patch for the TinyMCE rich text editor?  (Y/n) ';
 		system("cp $path/$version/core.js $path/kayako_fusion/__swift/apps/base/javascript/__cp/thirdparty/legacy/");
 		system("cp $path/$version/class.Controller_ArticleManager.php $path/kayako_fusion/__apps/knowledgebase/staff/");
 		system("cp $path/$version/class.SWIFT_TicketPost.php $path/kayako_fusion/__apps/tickets/models/Ticket/");
+		print "Done!\n\n";
 		
+		# SET DIRECTORY AND FILE PERMISSIONS.
+		print "Setting Ownership and Directory/File permissions.\n";
+		system("chown -R $apache $path/$newsource");
+		system("chmod 777 $path/$newsource");
+		system("$dirperm");
+		system("$fileperm");
+		print "Done!\n\n";
+
 		# FORCE A CACHE UPDATE.
 		print "Updating helpdesk cache\n";
-		system "curl support-dev.bookingcenter.com/staff/index.php?/Core/Default/RebuildCache";
+		system ("curl $hdurl/staff/index.php?/Core/Default/RebuildCache");
 		print "Done!\n";
+		
+		print "Upgrade complete.  Please go to $hdurl/setup/ to run the installer and finish the upgrade.\n\n";
+		exit;
+
     } elsif ($confirm =~ /^[N]$/i) {  # Match Nn
 }
 
 # SET DIRECTORY AND FILE PERMISSIONS.
 print "Setting Ownership and Directory/File permissions.\n";
-system("chown -R nobody.www $path/$newsource");
+system("chown -R $apache $path/$newsource");
 system("chmod 777 $path/$newsource");
 system("$dirperm");
 system("$fileperm");
 print "Done!\n\n";
 
-print "Upgrade complete.  Please go to https://support.bookingcenter.com/setup/ to run the installer and finish the upgrade.\n\n";
+print "Upgrade complete.  Please go to $hdurl/setup/ to run the installer and finish the upgrade.\n\n";
 exit;
 
