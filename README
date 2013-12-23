@@ -1,0 +1,34 @@
+INTRODUCTION
+============
+Perl script to save the laborious task of upgrading Kayako download helpdesk by hand.  If 
+you have comments or suggestions please direct them to jchieppa AT gmail DOT com or via fork
+and pull request.
+
+INSTALLATION
+============
+Copy the kayako_upgrade.pl script to your htdocs root directory.
+
+Script expects that you have already downloaded and extracted the required helpdesk and 
+geoip tarballs and that a valid key.php exists in your existing installation dir.
+
+During the installation the script will prompt you for your existing source directory as well
+as the new source directories.  When entering any directory name (source, geoip, tinymce patch)
+enter only the directory name, i.e. fusion-stable-sourceobf-4-64-1-4827 not the full path.
+
+When prompted a (Y/n) the script assumes Yes on Y/y or enter and no on any other character.
+
+We use Gary's 'CustomTweaks' App.  If you do not please comment out or remove lines 93-95.
+
+CONFIGURATION
+=============
+Edit the script to define variables relevant to your installation.  At minimum you need to 
+set the following variables:
+
+# SET YOUR DATABASE VARIABLES
+my $dbuser = 'username';
+my $dbpass = 'password';
+my $dbname = 'kayako';
+
+# SET YOUR HTDOCS ROOT 
+my $path = "/www/htdocs";
+
