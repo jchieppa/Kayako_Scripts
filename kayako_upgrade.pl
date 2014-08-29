@@ -2,8 +2,8 @@
 ####################################################################################
 # Automate copying required config files, key.php and attachments directory when
 # doing a Kayako version upgrade.
-# 12/23/2013
-# Version 1.3.4
+# 8/29/2014
+# Version 1.5
 # jchieppa@gmail.com
 ####################################################################################
 
@@ -98,6 +98,11 @@ print "Done!\n\n";
 
 print "Copying CustomTweaks App.\n";
 system("cp -R $path/$oldsource/__apps/customtweaks/ $path/$newsource/__apps/");
+print "Done!\n\n";
+
+print "Copying RFC822 Patch required for version prior to 4.68"
+system("cp -R $path/RFC822PATCH/class.SWIFT_MailMime.php $path/$newsource/__swift/library/Mail/");
+system("cp -R $path/RFC822PATCH/RFC822Extended.php $path/$newsource/__swift/thirdparty/MIME/");
 print "Done!\n\n";
 
 # GET NEW GEOIP FILES IF PROVIDED, SKIP IF OMITED.

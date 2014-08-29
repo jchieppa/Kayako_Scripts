@@ -48,6 +48,11 @@ my $apache = "nobody.www";
 We run Apache under nobody user, thus we give file and directory ownership to nobody.www 
 Chanage this variable as needed
 
+RFC822 Patch.  Currently email parser will fail on any email that doesn't conform to RFC822 
+stopping all mail pickup of any messages newer than the failed message.  Kayako has a non published
+patch to resolve this.  Upload the folder RFC822PATCH to your $path root directory prior to running
+the upgrade script
+
 
   
 ##########################
